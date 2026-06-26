@@ -1,0 +1,266 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# =====================================================
+# FUNGSI KURVA
+# =====================================================
+
+def lingkaran(r, xc, yc, delta_theta):
+
+    theta = np.arange(
+        0,
+        2*np.pi,
+        delta_theta
+    )
+
+    x = xc + r*np.cos(theta)
+    y = yc + r*np.sin(theta)
+
+    return x, y
+
+
+def elips(a, b, xc, yc, delta_theta):
+
+    theta = np.arange(
+        0,
+        2*np.pi,
+        delta_theta
+    )
+
+    x = xc + a*np.cos(theta)
+    y = yc + b*np.sin(theta)
+
+    return x, y
+
+
+def parabola(a, xp, yp,
+             t_awal, t_akhir,
+             delta_t):
+
+    t = np.arange(
+        t_awal,
+        t_akhir,
+        delta_t
+    )
+
+    x = xp + a*(t**2)
+    y = yp + 2*a*t
+
+    return x, y
+
+
+def hiperbola(a, b, xc, yc,
+              delta_theta):
+
+    theta = np.arange(
+        -1.4,
+        1.4,
+        delta_theta
+    )
+
+    x = xc + a*(1/np.cos(theta))
+    y = yc + b*np.tan(theta)
+
+    return x, y
+
+
+# =====================================================
+# INPUT USER
+# =====================================================
+
+print("="*50)
+print("PARAMETER KURVA")
+print("="*50)
+
+r = float(input("Jari-jari Lingkaran [5] : ") or 5)
+
+a_elips = float(
+    input("Semi-sumbu Horizontal Elips [6] : ")
+    or 6
+)
+
+b_elips = float(
+    input("Semi-sumbu Vertikal Elips [3] : ")
+    or 3
+)
+
+a_parabola = float(
+    input("Konstanta a Parabola [1] : ")
+    or 1
+)
+
+a_hip = float(
+    input("Konstanta a Hiperbola [2] : ")
+    or 2
+)
+
+b_hip = float(
+    input("Konstanta b Hiperbola [1] : ")
+    or 1
+)
+
+# =====================================================
+# RESOLUSI
+# =====================================================
+
+resolusi = [
+    0.5,
+    0.1,
+    0.01
+]
+
+# =====================================================
+# FIGURE
+# =====================================================
+
+fig, axs = plt.subplots(
+    4,
+    3,
+    figsize=(16, 18)
+)
+
+# =====================================================
+# LINGKARAN
+# =====================================================
+
+for col, delta in enumerate(resolusi):
+
+    x, y = lingkaran(
+        r,
+        0,
+        0,
+        delta
+    )
+
+    axs[0, col].scatter(
+        x,
+        y,
+        s=20
+    )
+
+    axs[0, col].plot(
+        x,
+        y,
+        alpha=0.4
+    )
+
+    axs[0, col].set_title(
+        f"Lingkaran\nΔ={delta}\n{len(x)} titik"
+    )
+
+    axs[0, col].grid(True)
+    axs[0, col].axis("equal")
+
+# =====================================================
+# ELIPS
+# =====================================================
+
+for col, delta in enumerate(resolusi):
+
+    x, y = elips(
+        a_elips,
+        b_elips,
+        0,
+        0,
+        delta
+    )
+
+    axs[1, col].scatter(
+        x,
+        y,
+        s=20
+    )
+
+    axs[1, col].plot(
+        x,
+        y,
+        alpha=0.4
+    )
+
+    axs[1, col].set_title(
+        f"Elips\nΔ={delta}\n{len(x)} titik"
+    )
+
+    axs[1, col].grid(True)
+    axs[1, col].axis("equal")
+
+# =====================================================
+# PARABOLA
+# =====================================================
+
+for col, delta in enumerate(resolusi):
+
+    x, y = parabola(
+        a_parabola,
+        0,
+        0,
+        -2,
+        2,
+        delta
+    )
+
+    axs[2, col].scatter(
+        x,
+        y,
+        s=20
+    )
+
+    axs[2, col].plot(
+        x,
+        y,
+        alpha=0.4
+    )
+
+    axs[2, col].set_title(
+        f"Parabola\nΔ={delta}\n{len(x)} titik"
+    )
+
+    axs[2, col].grid(True)
+    axs[2, col].axis("equal")
+
+# =====================================================
+# HIPERBOLA
+# =====================================================
+
+for col, delta in enumerate(resolusi):
+
+    x, y = hiperbola(
+        a_hip,
+        b_hip,
+        0,
+        0,
+        delta
+    )
+
+    axs[3, col].scatter(
+        x,
+        y,
+        s=20
+    )
+
+    axs[3, col].plot(
+        x,
+        y,
+        alpha=0.4
+    )
+
+    axs[3, col].set_title(
+        f"Hiperbola\nΔ={delta}\n{len(x)} titik"
+    )
+
+    axs[3, col].grid(True)
+    axs[3, col].axis("equal")
+
+# =====================================================
+# JUDUL
+# =====================================================
+
+plt.suptitle(
+    "PERBANDINGAN RESOLUSI KURVA PARAMETRIK",
+    fontsize=18,
+    fontweight="bold"
+)
+
+plt.tight_layout()
+
+plt.show()

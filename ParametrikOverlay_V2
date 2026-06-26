@@ -1,0 +1,336 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# =====================================================
+# FUNGSI KURVA
+# =====================================================
+
+def lingkaran(r, xc, yc, delta_theta):
+
+    theta = np.arange(
+        0,
+        2 * np.pi,
+        delta_theta
+    )
+
+    x = xc + r * np.cos(theta)
+    y = yc + r * np.sin(theta)
+
+    return theta, x, y
+
+
+def elips(a, b, xc, yc, delta_theta):
+
+    theta = np.arange(
+        0,
+        2 * np.pi,
+        delta_theta
+    )
+
+    x = xc + a * np.cos(theta)
+    y = yc + b * np.sin(theta)
+
+    return theta, x, y
+
+
+def parabola(a, xp, yp,
+             t_awal, t_akhir,
+             delta_t):
+
+    t = np.arange(
+        t_awal,
+        t_akhir,
+        delta_t
+    )
+
+    x = xp + a * (t ** 2)
+    y = yp + 2 * a * t
+
+    return t, x, y
+
+
+def hiperbola(a, b, xc, yc,
+              delta_theta):
+
+    theta = np.arange(
+        -1.4,
+        1.4,
+        delta_theta
+    )
+
+    x = xc + a * (1 / np.cos(theta))
+    y = yc + b * np.tan(theta)
+
+    return theta, x, y
+
+
+# =====================================================
+# DATA TITIK
+# =====================================================
+
+def tampilkan_ringkasan(nama, jumlah):
+
+    print("\n")
+    print("=" * 50)
+    print(f"{nama}")
+    print("=" * 50)
+
+    print(f"Jumlah Titik = {jumlah}")
+
+
+# =====================================================
+# OVERLAY VISUALIZATION
+# =====================================================
+
+def overlay_kurva(
+    fungsi_kurva,
+    judul,
+    parameter_input
+):
+
+    resolusi = [
+        0.5,
+        0.1,
+        0.01
+    ]
+
+    plt.figure(
+        figsize=(8, 8)
+    )
+
+    for delta in resolusi:
+
+        parameter, x, y = fungsi_kurva(
+            *parameter_input,
+            delta
+        )
+
+        plt.scatter(
+            x,
+            y,
+            s=20,
+            label=f"Δ={delta} ({len(x)} titik)"
+        )
+
+        plt.plot(
+            x,
+            y,
+            alpha=0.4
+        )
+
+    plt.title(
+        f"OVERLAY RESOLUSI {judul.upper()}"
+    )
+
+    plt.grid(True)
+    plt.axis("equal")
+    plt.legend()
+
+    plt.show()
+
+
+# =====================================================
+# MENU
+# =====================================================
+
+while True:
+
+    print("\n")
+    print("=" * 45)
+    print("PEMBANGKITAN KURVA PARAMETRIK")
+    print("=" * 45)
+
+    print("1. Lingkaran")
+    print("2. Elips")
+    print("3. Parabola")
+    print("4. Hiperbola")
+    print("0. Keluar")
+
+    pilihan = input("Pilih Menu : ")
+
+    if pilihan == "0":
+
+        print("Program selesai.")
+        break
+
+    # =================================================
+    # LINGKARAN
+    # =================================================
+
+    elif pilihan == "1":
+
+        r = float(
+            input("Jari-jari [5] : ") or 5
+        )
+
+        xc = float(
+            input("Pusat X [0] : ") or 0
+        )
+
+        yc = float(
+            input("Pusat Y [0] : ") or 0
+        )
+
+        theta, x, y = lingkaran(
+            r,
+            xc,
+            yc,
+            0.1
+        )
+
+        tampilkan_ringkasan(
+            "LINGKARAN",
+            len(x)
+        )
+
+        overlay_kurva(
+            lingkaran,
+            "Lingkaran",
+            [r, xc, yc]
+        )
+
+    # =================================================
+    # ELIPS
+    # =================================================
+
+    elif pilihan == "2":
+
+        a = float(
+            input("Semi-sumbu Horizontal [6] : ")
+            or 6
+        )
+
+        b = float(
+            input("Semi-sumbu Vertikal [3] : ")
+            or 3
+        )
+
+        xc = float(
+            input("Pusat X [0] : ")
+            or 0
+        )
+
+        yc = float(
+            input("Pusat Y [0] : ")
+            or 0
+        )
+
+        theta, x, y = elips(
+            a,
+            b,
+            xc,
+            yc,
+            0.1
+        )
+
+        tampilkan_ringkasan(
+            "ELIPS",
+            len(x)
+        )
+
+        overlay_kurva(
+            elips,
+            "Elips",
+            [a, b, xc, yc]
+        )
+
+    # =================================================
+    # PARABOLA
+    # =================================================
+
+    elif pilihan == "3":
+
+        a = float(
+            input("Konstanta a [1] : ")
+            or 1
+        )
+
+        xp = float(
+            input("Vertex X [0] : ")
+            or 0
+        )
+
+        yp = float(
+            input("Vertex Y [0] : ")
+            or 0
+        )
+
+        t_awal = float(
+            input("t awal [-2] : ")
+            or -2
+        )
+
+        t_akhir = float(
+            input("t akhir [2] : ")
+            or 2
+        )
+
+        t, x, y = parabola(
+            a,
+            xp,
+            yp,
+            t_awal,
+            t_akhir,
+            0.1
+        )
+
+        tampilkan_ringkasan(
+            "PARABOLA",
+            len(x)
+        )
+
+        overlay_kurva(
+            parabola,
+            "Parabola",
+            [a, xp, yp,
+             t_awal, t_akhir]
+        )
+
+    # =================================================
+    # HIPERBOLA
+    # =================================================
+
+    elif pilihan == "4":
+
+        a = float(
+            input("Konstanta a [2] : ")
+            or 2
+        )
+
+        b = float(
+            input("Konstanta b [1] : ")
+            or 1
+        )
+
+        xc = float(
+            input("Pusat X [0] : ")
+            or 0
+        )
+
+        yc = float(
+            input("Pusat Y [0] : ")
+            or 0
+        )
+
+        theta, x, y = hiperbola(
+            a,
+            b,
+            xc,
+            yc,
+            0.1
+        )
+
+        tampilkan_ringkasan(
+            "HIPERBOLA",
+            len(x)
+        )
+
+        overlay_kurva(
+            hiperbola,
+            "Hiperbola",
+            [a, b, xc, yc]
+        )
+
+    else:
+
+        print("Pilihan tidak valid!")
